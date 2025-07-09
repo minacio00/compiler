@@ -47,6 +47,31 @@ Token next_token(void) {
         return (Token){.type = TOK_EOF, .lexeme = "", .line = current_line()};
     }
 
+    /* Variable with ! prefix */
+    if (c == '!') {
+        int start_line = current_line();
+        advance_char(); /* consume ! */
+        char buf[256]; 
+        buf[0] = '!';
+        int len = 1;
+        
+        /* Must be followed by letter or _ */
+        if (!isalpha(peek_char()) && peek_char() != '_') {
+            lex_error(start_line, "Invalid variable name after '!'");
+            return (Token){.type = TOK_ERROR, .lexeme = make_lexeme("", 0), .line = start_line};
+        }
+        
+        while (isalnum(peek_char()) || peek_char()=='_') {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char();
+        }
+        buf[len] = '\0';
+        return (Token){
+          .type  = TOK_IDENTIFIER,
+          .lexeme = make_lexeme(buf, len),
+          .line  = start_line
+        };
+    }
+
     /* Identifier or keyword */
     if (isalpha(c) || c == '_') {
         int start_line = current_line();
@@ -63,11 +88,35 @@ Token next_token(void) {
         };
     }
 
-    /* Number literal (integer) */
+    /* Number literal (integer or decimal) */
     if (isdigit(c)) {
         int start_line = current_line();
         char buf[64]; int len = 0;
-        while (isdigit(peek_char())) buf[len++] = advance_char();
+        
+        /* Read integer part */
+        while (isdigit(peek_char())) {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char();
+        }
+        
+        /* Check for decimal point */
+        if (peek_char() == '.') {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char(); /* consume . */
+            
+            /* Read fractional part */
+            if (!isdigit(peek_char())) {
+                lex_error(start_line, "Invalid decimal number - missing digits after '.'");
+                return (Token){.type = TOK_ERROR, .lexeme = make_lexeme("", 0), .line = start_line};
+            }
+            
+            while (isdigit(peek_char())) {
+                if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char();
+            }
+            
+            buf[len] = '\0';
+            return (Token){.type=TOK_DECIMAL_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
+        }
+        
+        buf[len] = '\0';
         return (Token){.type=TOK_INTEGER_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
     }
 
@@ -85,7 +134,7 @@ Token next_token(void) {
         return (Token){.type=TOK_STRING_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
     }
 
-    /* Two-character operators */
+    /* Two-character operators and single characters */
     int start_line = current_line();
     char first = advance_char();
     switch (first) {
@@ -120,6 +169,8 @@ Token next_token(void) {
         case ')': return (Token){.type=TOK_RPAREN, .lexeme=")", .line=start_line};
         case '{': return (Token){.type=TOK_LBRACE, .lexeme="{", .line=start_line};
         case '}': return (Token){.type=TOK_RBRACE, .lexeme="}", .line=start_line};
+        case '[': return (Token){.type=TOK_LBRACKET, .lexeme="[", .line=start_line};
+        case ']': return (Token){.type=TOK_RBRACKET, .lexeme="]", .line=start_line};
         case ';': return (Token){.type=TOK_SEMICOLON, .lexeme=";", .line=start_line};
         case ',': return (Token){.type=TOK_COMMA, .lexeme=",", .line=start_line};
         default:
