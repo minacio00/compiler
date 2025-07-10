@@ -5,7 +5,7 @@
 
 void lex_error(int line, const char *fmt, ...) {
     va_list ap;
-    fprintf(stderr, "Lexical error (line %d): ", line);
+    fprintf(stderr, "Erro léxico na linha (line %d): ", line);
     va_start(ap, fmt);
     vfprintf(stderr, fmt, ap);
     va_end(ap);

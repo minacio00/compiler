@@ -16,7 +16,6 @@ static char *make_lexeme(const char *start, size_t len) {
     return s;
 }
 
-/* Skip whitespace and comments */
 static void skip_irrelevant(void) {
     int c;
     while ((c = peek_char())) {
@@ -47,6 +46,30 @@ Token next_token(void) {
         return (Token){.type = TOK_EOF, .lexeme = "", .line = current_line()};
     }
 
+    if (c == '!') {
+        int start_line = current_line();
+        advance_char();  
+        if (peek_char() < 'a' || peek_char() > 'z') {
+            lex_error(start_line,
+                      "Nome inválido para variável: experado [a–z] após o '!', recebido '%c'",
+                      peek_char());
+        }
+        char buf[256];
+        int len = 0;
+        buf[len++] = '!'; 
+        buf[len++] = advance_char();  
+        while (isalnum(peek_char())) {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char();
+            else advance_char();
+        }
+        buf[len] = '\0';
+        return (Token){
+            .type   = TOK_IDENTIFIER,
+            .lexeme = make_lexeme(buf, len),
+            .line   = start_line
+        };
+    }
+
     /* Identifier or keyword */
     if (isalpha(c) || c == '_') {
         int start_line = current_line();
@@ -63,11 +86,35 @@ Token next_token(void) {
         };
     }
 
-    /* Number literal (integer) */
+    /* Number literal (integer or decimal) */
     if (isdigit(c)) {
         int start_line = current_line();
         char buf[64]; int len = 0;
-        while (isdigit(peek_char())) buf[len++] = advance_char();
+        
+        /* Read integer part */
+        while (isdigit(peek_char())) {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char();
+        }
+        
+        /* Check for decimal point */
+        if (peek_char() == '.') {
+            if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char(); /* consume . */
+            
+            /* Read fractional part */
+            if (!isdigit(peek_char())) {
+                lex_error(start_line, "Número decimal inválido - faltando dígitos após o ponto '.'");
+                return (Token){.type = TOK_ERROR, .lexeme = make_lexeme("", 0), .line = start_line};
+            }
+            
+            while (isdigit(peek_char())) {
+                if (len < sizeof(buf)-1) buf[len++] = advance_char(); else advance_char();
+            }
+            
+            buf[len] = '\0';
+            return (Token){.type=TOK_DECIMAL_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
+        }
+        
+        buf[len] = '\0';
         return (Token){.type=TOK_INTEGER_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
     }
 
@@ -78,14 +125,14 @@ Token next_token(void) {
         while (peek_char() && peek_char() != '"') {
             if (peek_char() == '\\') { buf[len++] = advance_char(); }
             buf[len++] = advance_char();
-            if (len >= sizeof(buf)-1) lex_error(start_line, "String too long");
+            if (len >= sizeof(buf)-1) lex_error(start_line, "String muito longa");
         }
-        if (peek_char() != '"') lex_error(start_line, "Unterminated string literal");
+        if (peek_char() != '"') lex_error(start_line, "string sem terminação");
         advance_char();
         return (Token){.type=TOK_STRING_LITERAL, .lexeme=make_lexeme(buf,len), .line=start_line};
     }
 
-    /* Two-character operators */
+    /* Two-character operators and single characters */
     int start_line = current_line();
     char first = advance_char();
     switch (first) {
@@ -120,10 +167,12 @@ Token next_token(void) {
         case ')': return (Token){.type=TOK_RPAREN, .lexeme=")", .line=start_line};
         case '{': return (Token){.type=TOK_LBRACE, .lexeme="{", .line=start_line};
         case '}': return (Token){.type=TOK_RBRACE, .lexeme="}", .line=start_line};
+        case '[': return (Token){.type=TOK_LBRACKET, .lexeme="[", .line=start_line};
+        case ']': return (Token){.type=TOK_RBRACKET, .lexeme="]", .line=start_line};
         case ';': return (Token){.type=TOK_SEMICOLON, .lexeme=";", .line=start_line};
         case ',': return (Token){.type=TOK_COMMA, .lexeme=",", .line=start_line};
         default:
-          lex_error(start_line, "Unexpected character '%c'", first);
+          lex_error(start_line, "Caractere inesperado: '%c'", first);
           return (Token){
               .type   = TOK_ERROR,
               .lexeme = make_lexeme("", 0),

@@ -12,7 +12,6 @@ OBJECTS   = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
 
 all: $(BUILDDIR) $(TARGET)
 
-# Ensure build directory exists
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
