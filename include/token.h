@@ -12,6 +12,7 @@ typedef enum {
     /* Keywords */
     TOK_KW_INTEIRO,
     TOK_KW_DECIMAL,
+    TOK_KW_TEXTO,
     TOK_KW_SE,
     TOK_KW_SENAO,
     TOK_KW_ENQUANTO,
