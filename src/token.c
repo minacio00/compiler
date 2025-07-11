@@ -10,7 +10,7 @@ static struct { const char *kw; TokenType tok; } keywords[] = {
     {"enquanto",TOK_KW_ENQUANTO},
     {"para",    TOK_KW_PARA},
     {"retorne", TOK_KW_RETORNE},
-    {"retorno", TOK_KW_RETORNO},
+    {"retorno", TOK_KW_RETORNE},
     {"principal", TOK_KW_PRINCIPAL},
     {"funcao",  TOK_KW_FUNCAO},
     {"leia",    TOK_KW_LEIA},
@@ -42,7 +42,7 @@ const char *token_type_name(TokenType t) {
         case TOK_KW_SENAO:         return "TOK_KW_SENAO";
         case TOK_KW_ENQUANTO:      return "TOK_KW_ENQUANTO";
         case TOK_KW_PARA:          return "TOK_KW_PARA";
-        case TOK_KW_RETORNE:       return "TOK_KW_RETORNE";
+        case TOK_KW_RETORNE:       return "TOK_KW_RETORNO";
         case TOK_KW_RETORNO:       return "TOK_KW_RETORNO";
         case TOK_KW_PRINCIPAL:     return "TOK_KW_PRINCIPAL";
         case TOK_KW_FUNCAO:        return "TOK_KW_FUNCAO";

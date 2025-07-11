@@ -1,3 +1,4 @@
+#include "memmgr.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -9,7 +10,7 @@
 
 /* Helpers for building lexemes */
 static char *make_lexeme(const char *start, size_t len) {
-    char *s = malloc(len+1);
+    char *s = mm_malloc(len + 1);
     if (!s) exit(EXIT_FAILURE);
     memcpy(s, start, len);
     s[len] = '\0';
@@ -21,12 +22,10 @@ static void skip_irrelevant(void) {
     while ((c = peek_char())) {
         if (isspace(c)) { advance_char(); continue; }
         if (c == '/' && (advance_char(), peek_char() == '/')) {
-            /* single-line comment */
             while (peek_char() && advance_char() != '\n');
             continue;
         }
         if (c == '/' && (advance_char(), peek_char() == '*')) {
-            /* block comment */
             advance_char();
             while (1) {
                 int d = advance_char();
@@ -55,8 +54,7 @@ Token next_token(void) {
                       "Nome inválido para variável: esperado [a–z] após '!', recebido '%c'",
                       peek_char());
         }
-        char buf[256];
-        int len = 0;
+        char buf[256]; int len = 0;
         buf[len++] = '!';
         buf[len++] = advance_char();
         while (isalnum(peek_char())) {
@@ -64,33 +62,24 @@ Token next_token(void) {
             else advance_char();
         }
         buf[len] = '\0';
-        return (Token){
-            .type   = TOK_IDENTIFIER,
-            .lexeme = make_lexeme(buf, len),
-            .line   = start_line
-        };
+        return (Token){.type = TOK_IDENTIFIER, .lexeme = make_lexeme(buf, len), .line = start_line};
     }
 
     /* Nome de função: __[a-zA-Z0-9][a-zA-Z0-9]* */
     if (c == '_') {
         int start_line = current_line();
-        /* verifica dois underlines */
-        if (peek_char() != '_' ) {
+        if (peek_char() != '_') {
             lex_error(start_line,
                       "Nome de função inválido: deve começar com '__' seguido de letra ou dígito");
         }
-        /* consome primeiro '_' */
         advance_char();
         if (peek_char() != '_') {
             lex_error(start_line,
                       "Nome de função inválido: deve começar com '__' seguido de letra ou dígito");
         }
-        /* consome segundo '_' */
-        char buf[256];
-        int len = 0;
+        char buf[256]; int len = 0;
         buf[len++] = advance_char();
         buf[len++] = advance_char();
-        /* agora peek_char() é o primeiro caractere do nome da função */
         if (!isalnum(peek_char())) {
             lex_error(start_line,
                       "Nome de função inválido: deve vir letra ou dígito após '__'");
@@ -100,18 +89,13 @@ Token next_token(void) {
             else advance_char();
         }
         buf[len] = '\0';
-        return (Token){
-            .type   = TOK_IDENTIFIER,
-            .lexeme = make_lexeme(buf, len),
-            .line   = start_line
-        };
+        return (Token){.type = TOK_IDENTIFIER, .lexeme = make_lexeme(buf, len), .line = start_line};
     }
 
     /* Palavra-chave ou erro: [a-zA-Z][a-zA-Z0-9_]* */
     if (isalpha(c)) {
         int start_line = current_line();
-        char buf[256];
-        int len = 0;
+        char buf[256]; int len = 0;
         while (isalnum(peek_char()) || peek_char() == '_') {
             if (len < (int)sizeof(buf)-1) buf[len++] = advance_char();
             else advance_char();
@@ -123,23 +107,17 @@ Token next_token(void) {
                       "Identificador inválido: '%s' não é palavra-chave, nem nome de função nem variável",
                       buf);
         }
-        return (Token){
-            .type   = type,
-            .lexeme = make_lexeme(buf, len),
-            .line   = start_line
-        };
+        return (Token){.type = type, .lexeme = make_lexeme(buf, len), .line = start_line};
     }
 
     /* Número literal (inteiro ou decimal) */
     if (isdigit(c)) {
         int start_line = current_line();
         char buf[64]; int len = 0;
-        /* parte inteira */
         while (isdigit(peek_char())) {
             if (len < (int)sizeof(buf)-1) buf[len++] = advance_char();
             else advance_char();
         }
-        /* ponto decimal? */
         if (peek_char() == '.') {
             if (len < (int)sizeof(buf)-1) buf[len++] = advance_char();
             else advance_char();
@@ -184,23 +162,43 @@ Token next_token(void) {
         case '^': return (Token){.type=TOK_CARET,    .lexeme="^", .line=start_line};
         case '=':
             if (peek_char() == '=') { advance_char();
-                return (Token){.type=TOK_EQ, .lexeme=make_lexeme("==",2), .line=start_line}; }
-            return (Token){.type=TOK_ASSIGN, .lexeme=make_lexeme("=",1), .line=start_line};
+                return (Token){.type=TOK_EQ,    .lexeme=make_lexeme("==",2), .line=start_line}; }
+            return (Token){.type=TOK_ASSIGN, .lexeme=make_lexeme("=",1),  .line=start_line};
         case '<':
-            if (peek_char()=='=') { advance_char(); return (Token){.type=TOK_LE,  .lexeme="<=", .line=start_line}; }
-            if (peek_char()=='>') { advance_char(); return (Token){.type=TOK_NEQ, .lexeme="<>", .line=start_line}; }
-            return (Token){.type=TOK_LT, .lexeme="<", .line=start_line};
+            if (peek_char()=='=') { advance_char();
+                return (Token){.type=TOK_LE,    .lexeme="<=",  .line=start_line}; }
+            if (peek_char()=='>') { advance_char();
+                return (Token){.type=TOK_NEQ,   .lexeme="<>",  .line=start_line}; }
+            return (Token){.type=TOK_LT,      .lexeme="<",   .line=start_line};
         case '>':
-            if (peek_char()=='=') { advance_char(); return (Token){.type=TOK_GE, .lexeme=">=", .line=start_line}; }
-            return (Token){.type=TOK_GT, .lexeme=">", .line=start_line};
-        case '(': return (Token){.type=TOK_LPAREN, .lexeme="(", .line=start_line};
-        case ')': return (Token){.type=TOK_RPAREN, .lexeme=")", .line=start_line};
-        case '{': return (Token){.type=TOK_LBRACE, .lexeme="{", .line=start_line};
-        case '}': return (Token){.type=TOK_RBRACE, .lexeme="}", .line=start_line};
+            if (peek_char()=='=') { advance_char();
+                return (Token){.type=TOK_GE,    .lexeme=">=",  .line=start_line}; }
+            return (Token){.type=TOK_GT,      .lexeme=">",   .line=start_line};
+        case '&':
+    if (peek_char() == '&') {
+        advance_char();
+        return (Token){ .type = TOK_AND,
+                        .lexeme = make_lexeme("&&", 2),
+                        .line   = start_line };
+    }
+    lex_error(start_line, "Caractere inesperado: '%c'", first);
+
+case '|':
+    if (peek_char() == '|') {
+        advance_char();
+        return (Token){ .type = TOK_OR,
+                        .lexeme = make_lexeme("||", 2),
+                        .line   = start_line };
+    }
+    lex_error(start_line, "Caractere inesperado: '%c'", first);
+        case '(': return (Token){.type=TOK_LPAREN, .lexeme="(",  .line=start_line};
+        case ')': return (Token){.type=TOK_RPAREN, .lexeme=")",  .line=start_line};
+        case '{': return (Token){.type=TOK_LBRACE, .lexeme="{",  .line=start_line};
+        case '}': return (Token){.type=TOK_RBRACE, .lexeme="}",  .line=start_line};
         case '[': return (Token){.type=TOK_LBRACKET, .lexeme="[", .line=start_line};
         case ']': return (Token){.type=TOK_RBRACKET, .lexeme="]", .line=start_line};
-        case ';': return (Token){.type=TOK_SEMICOLON,.lexeme=";", .line=start_line};
-        case ',': return (Token){.type=TOK_COMMA,   .lexeme=",", .line=start_line};
+        case ';': return (Token){.type=TOK_SEMICOLON, .lexeme=";",.line=start_line};
+        case ',': return (Token){.type=TOK_COMMA,    .lexeme=",",.line=start_line};
         default:
             lex_error(start_line, "Caractere inesperado: '%c'", first);
             return (Token){.type=TOK_ERROR, .lexeme=make_lexeme("",0), .line=start_line};
@@ -218,3 +216,4 @@ int lex_file(const char *path) {
     close_scanner();
     return 0;
 }
+

@@ -1,0 +1,40 @@
+funcao __calc (!x, !y) {
+    inteiro !sum;
+    decimal !avg[5.2];
+    texto !label[15];
+    !sum = !x + !y * 2;
+    !avg = (!sum / 2.0);
+    !label = "resultado";
+    retorno !sum;
+}
+
+principal() {
+    inteiro !a, !b = 5;
+    decimal !d[3.2];
+    texto !msg[20];
+
+    leia(!a, !b);
+
+    se (!a == !b) {
+        escreva("Iguais", !a);
+    } senao se (!a > !b && !b <> 0) {
+        escreva("A maior e b <> 0", !a);
+    } senao {
+        escreva("B maior", !b);
+    }
+
+    para (!a = 0; !a < 3; !a = !a + 1) {
+        escreva("Iteracao", !a, "exp:", !a ^ 2);
+    }
+
+    se (!d >= 1.0 && !d <= 10.5) {
+        escreva("Decimal ok", !d);
+    }
+
+    se (!a < 0 || !b >= 5) {
+        escreva("OR test", !a, !b);
+    }
+
+    escreva("Fim do programa");
+}
+

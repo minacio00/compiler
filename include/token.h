@@ -1,15 +1,17 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-/* TokenType: all possible token categories */
+/* Todas as categorias de token possíveis */
 typedef enum {
     TOK_EOF,
     TOK_IDENTIFIER,
+
+    /* Literais */
     TOK_INTEGER_LITERAL,
     TOK_DECIMAL_LITERAL,
     TOK_STRING_LITERAL,
 
-    /* Keywords */
+    /* Palavras reservadas */
     TOK_KW_INTEIRO,
     TOK_KW_DECIMAL,
     TOK_KW_TEXTO,
@@ -24,29 +26,46 @@ typedef enum {
     TOK_KW_LEIA,
     TOK_KW_ESCREVA,
 
-    /* Operators */
-    TOK_PLUS, TOK_MINUS, TOK_STAR, TOK_SLASH, TOK_CARET,
-    TOK_EQ, TOK_NEQ, TOK_LT, TOK_GT, TOK_LE, TOK_GE,
-    TOK_ASSIGN,
+    /* Operadores */
+    TOK_PLUS,    /* + */
+    TOK_MINUS,   /* - */
+    TOK_STAR,    /* * */
+    TOK_SLASH,   /* / */
+    TOK_CARET,   /* ^ */
+    TOK_EQ,      /* == */
+    TOK_NEQ,     /* <> */
+    TOK_LT,      /* < */
+    TOK_GT,      /* > */
+    TOK_LE,      /* <= */
+    TOK_GE,      /* >= */
+    TOK_AND,     /* && */
+    TOK_OR,      /* || */
+    TOK_ASSIGN,  /* = */
 
-    /* Punctuation */
-    TOK_LPAREN, TOK_RPAREN,
-    TOK_LBRACE, TOK_RBRACE,
-    TOK_LBRACKET, TOK_RBRACKET,
-    TOK_SEMICOLON, TOK_COMMA,
+    /* Pontuação */
+    TOK_LPAREN,   /* ( */
+    TOK_RPAREN,   /* ) */
+    TOK_LBRACE,   /* { */
+    TOK_RBRACE,   /* } */
+    TOK_LBRACKET, /* [ */
+    TOK_RBRACKET, /* ] */
+    TOK_SEMICOLON,/* ; */
+    TOK_COMMA,    /* , */
 
+    /* Erro */
     TOK_ERROR
 } TokenType;
 
-/* Token: a lexeme with type and location */
+/* Representa um token com tipo, lexema e linha */
 typedef struct {
     TokenType type;
-    char *lexeme;   /* null-terminated text */
-    int line;       /* line number in source */
+    char *lexeme;
+    int line;
 } Token;
 
-/* Lookup: returns keyword token if matches, else TOK_IDENTIFIER */
+/* lookup de palavra-chave */
 TokenType lookup_keyword(const char *s);
+/* nome textual do token para debug */
 const char *token_type_name(TokenType t);
 
 #endif /* TOKEN_H */
