@@ -1,5 +1,7 @@
 # Compilador - Analisador Léxico
 
+## Alunos: Amado Pinheiro; Mateus Amelio
+
 Este projeto implementa um analisador léxico simples escrito em C. Ele reconhece tokens de uma linguagem fictícia para fins acadêmicos e sinaliza erros léxicos durante a leitura de um arquivo fonte.
 
 ## Estrutura do projeto
@@ -53,4 +55,3 @@ A saída listará os tokens identificados ou mensagens de erro. O arquivo acima 
    1: TOK_SEMICOLON   ';'
    2: TOK_EOF         ''
 ```
-
