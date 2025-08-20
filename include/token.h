@@ -31,6 +31,7 @@ typedef enum {
     TOK_MINUS,   /* - */
     TOK_STAR,    /* * */
     TOK_SLASH,   /* / */
+    TOK_MODULO,  /* % */
     TOK_CARET,   /* ^ */
     TOK_EQ,      /* == */
     TOK_NEQ,     /* <> */

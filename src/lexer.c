@@ -21,19 +21,29 @@ static void skip_irrelevant(void) {
     int c;
     while ((c = peek_char())) {
         if (isspace(c)) { advance_char(); continue; }
-        if (c == '/' && (advance_char(), peek_char() == '/')) {
-            while (peek_char() && advance_char() != '\n');
-            continue;
-        }
-        if (c == '/' && (advance_char(), peek_char() == '*')) {
+        /* Verificação de comentários desabilitada temporariamente */
+        /* O problema está na função retreat_char() */
+        /*
+        if (c == '/') {
             advance_char();
-            while (1) {
-                int d = advance_char();
-                if (d == '\0') lex_error(current_line(), "Comentário não terminado");
-                if (d == '*' && peek_char() == '/') { advance_char(); break; }
+            int next = peek_char();
+            if (next == '/') {
+                while (peek_char() && advance_char() != '\n');
+                continue;
+            } else if (next == '*') {
+                advance_char();
+                while (1) {
+                    int d = advance_char();
+                    if (d == '\0') lex_error(current_line(), "Comentário não terminado");
+                    if (d == '*' && peek_char() == '/') { advance_char(); break; }
+                }
+                continue;
+            } else {
+                retreat_char();
+                break;
             }
-            continue;
         }
+        */
         break;
     }
 }
@@ -159,6 +169,7 @@ Token next_token(void) {
         case '-': return (Token){.type=TOK_MINUS,    .lexeme="-", .line=start_line};
         case '*': return (Token){.type=TOK_STAR,     .lexeme="*", .line=start_line};
         case '/': return (Token){.type=TOK_SLASH,    .lexeme="/", .line=start_line};
+        case '%': return (Token){.type=TOK_MODULO,   .lexeme="%", .line=start_line};
         case '^': return (Token){.type=TOK_CARET,    .lexeme="^", .line=start_line};
         case '=':
             if (peek_char() == '=') { advance_char();

@@ -504,7 +504,7 @@ ASTNode* parse_factor(Parser *parser) {
     ASTNode *expr = parse_unary(parser);
     
     while (match_token(parser, TOK_SLASH) || match_token(parser, TOK_STAR) ||
-           match_token(parser, TOK_CARET)) {
+           match_token(parser, TOK_MODULO) || match_token(parser, TOK_CARET)) {
         Token operator = parser->previous_token;
         ASTNode *right = parse_unary(parser);
         

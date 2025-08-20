@@ -52,6 +52,7 @@ const char *token_type_name(TokenType t) {
         case TOK_MINUS:            return "TOK_MINUS";
         case TOK_STAR:             return "TOK_STAR";
         case TOK_SLASH:            return "TOK_SLASH";
+        case TOK_MODULO:           return "TOK_MODULO";
         case TOK_CARET:            return "TOK_CARET";
         case TOK_EQ:               return "TOK_EQ";
         case TOK_NEQ:              return "TOK_NEQ";
@@ -59,6 +60,8 @@ const char *token_type_name(TokenType t) {
         case TOK_GT:               return "TOK_GT";
         case TOK_LE:               return "TOK_LE";
         case TOK_GE:               return "TOK_GE";
+        case TOK_AND:              return "TOK_AND";
+        case TOK_OR:               return "TOK_OR";
         case TOK_ASSIGN:           return "TOK_ASSIGN";
         case TOK_LPAREN:           return "TOK_LPAREN";
         case TOK_RPAREN:           return "TOK_RPAREN";
