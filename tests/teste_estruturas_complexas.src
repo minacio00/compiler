@@ -1,0 +1,106 @@
+/* Função para calcular fatorial */
+funcao inteiro !fatorial(inteiro !n) {
+    se (!n <= 1) {
+        retorne 1;
+    }
+    retorne !n * !fatorial(!n - 1);
+}
+
+/* Função para verificar se é primo */
+funcao inteiro !eh_primo(inteiro !num) {
+    inteiro !i;
+    
+    se (!num < 2) {
+        retorne 0;
+    }
+    
+    para (!i = 2; !i * !i <= !num; !i = !i + 1) {
+        se (!num % !i == 0) {
+            retorne 0;
+        }
+    }
+    
+    retorne 1;
+}
+
+/* Função principal */
+principal() {
+    inteiro !numero, !resultado;
+    decimal !media = 0.0;
+    texto !mensagem = "Calculadora Avançada";
+    
+    /* Array para armazenar números */
+    inteiro !numeros[10];
+    inteiro !i, !soma = 0;
+    
+    /* Entrada de dados */
+    escreva("Digite um número para calcular o fatorial:");
+    leia(!numero);
+    
+    /* Cálculo do fatorial */
+    !resultado = !fatorial(!numero);
+    escreva("O fatorial de", !numero, "é", !resultado);
+    
+    /* Verificação de números primos */
+    escreva("Verificando números primos de 1 a 20:");
+    para (!i = 1; !i <= 20; !i = !i + 1) {
+        se (!eh_primo(!i)) {
+            escreva(!i, "é primo");
+        } senao {
+            escreva(!i, "não é primo");
+        }
+    }
+    
+    /* Preenchimento do array */
+    escreva("Preenchendo array com números:");
+    para (!i = 0; !i < 10; !i = !i + 1) {
+        !numeros[!i] = !i + 1;
+        !soma = !soma + !numeros[!i];
+        escreva("Posição", !i, "=", !numeros[!i]);
+    }
+    
+    /* Cálculo da média */
+    !media = !soma / 10.0;
+    escreva("Soma total:", !soma);
+    escreva("Média:", !media);
+    
+    /* Estrutura condicional complexa */
+    se (!media > 5.0) {
+        se (!soma > 50) {
+            escreva("Média alta e soma alta");
+        } senao {
+            escreva("Média alta mas soma baixa");
+        }
+    } senao {
+        se (!soma > 30) {
+            escreva("Média baixa mas soma aceitável");
+        } senao {
+            escreva("Média e soma baixas");
+        }
+    }
+    
+    /* Loop com break simulado */
+    inteiro !encontrado = 0;
+    para (!i = 0; !i < 10 && !encontrado == 0; !i = !i + 1) {
+        se (!numeros[!i] == 7) {
+            escreva("Número 7 encontrado na posição", !i);
+            !encontrado = 1;
+        }
+    }
+    
+    /* Operações matemáticas complexas */
+    decimal !potencia = 1.0;
+    para (!i = 0; !i < 5; !i = !i + 1) {
+        !potencia = !potencia * 2.0;
+        escreva("2 elevado a", !i, "=", !potencia);
+    }
+    
+    /* Teste de operadores lógicos */
+    se ((!numero > 0) && (!numero < 100) || (!numero == 0)) {
+        escreva("Número válido para processamento");
+    }
+    
+    /* Teste de precedência de operadores */
+    decimal !calc = (!soma + !numero) * (!media - 1) / (!resultado + 1);
+    escreva("Cálculo complexo:", !calc);
+}

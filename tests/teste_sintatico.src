@@ -1,0 +1,70 @@
+principal(){
+    inteiro !a, !b, !c = 10;
+    decimal !x = 3.14, !y;
+    texto !msg = "Hello World";
+    
+    inteiro !numeros[5];
+    decimal !precos[10];
+    
+    !a = 5;
+    !b = !a + 3;
+    !c = !b * 2;
+    
+    !x = !a + !b * !c;
+    !y = (!a + !b) / 2;
+    
+    se (!a > 0) {
+        escreva("A é positivo");
+    }
+    
+    se (!b <= 10 && !c >= 5) {
+        escreva("B e C estão na faixa válida");
+    }
+    
+    se (!a == 5 || !b == 8) {
+        escreva("A é 5 ou B é 8");
+    }
+    
+    se (!a > 0) {
+        se (!b > 0) {
+            escreva("Ambos são positivos");
+        } senao {
+            escreva("A é positivo, B não");
+        }
+    } senao {
+        escreva("A não é positivo");
+    }
+    
+    !a = 1;
+    enquanto (!a <= 5) {
+        escreva("Contador:", !a);
+        !a = !a + 1;
+    }
+    
+    para (!i = 0; !i < 10; !i = !i + 1) {
+        se (!i % 2 == 0) {
+            escreva("Par:", !i);
+        } senao {
+            escreva("Ímpar:", !i);
+        }
+    }
+    
+    escreva("Digite um número:");
+    leia(!x);
+    
+    escreva("Você digitou:", !x);
+    escreva("O dobro é:", !x * 2);
+    
+    {
+        inteiro !temp = 100;
+        {
+            decimal !local = 2.5;
+            escreva("Valor local:", !local);
+        }
+        escreva("Valor temp:", !temp);
+    }
+    
+    !resultado = (!a + !b) * (!c - !d) / (!e + 1);
+    
+    !complexo = ((!a + !b) * (!c + !d)) + ((!e + !f) * (!g + !h));
+}

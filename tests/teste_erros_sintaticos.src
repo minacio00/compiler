@@ -1,0 +1,54 @@
+principal(){
+    /* Erro: declaração sem ponto e vírgula */
+    inteiro !a
+    decimal !b = 5.5
+    
+    /* Erro: atribuição sem ponto e vírgula */
+    !a = 10
+    !b = !a + 5
+    
+    /* Erro: parênteses não balanceados */
+    se (!a > 0 {
+        escreva("A é positivo");
+    }
+    
+    /* Erro: chaves não balanceadas */
+    enquanto (!b < 10) {
+        escreva("B é menor que 10";
+        !b = !b + 1;
+    
+    /* Erro: estrutura for incompleta */
+    para (!i = 0; !i < 5 {
+        escreva("i =", !i);
+    }
+    
+    /* Erro: comando leia sem parênteses */
+    leia !x;
+    
+    /* Erro: comando escreva sem parênteses */
+    escreva "Olá mundo";
+    
+    /* Erro: expressão malformada */
+    !resultado = !a + * !b;
+    
+    /* Erro: declaração após comando não-declarativo */
+    !temp = 100;
+    inteiro !novo;
+    
+    /* Erro: bloco não fechado */
+    {
+        inteiro !local = 50;
+        escreva("Local =", !local);
+    
+    /* Erro: operador inválido */
+    !teste = !a <> !b;
+    
+    /* Erro: string não fechada */
+    escreva("Esta string não fecha;
+    
+    /* Erro: array com tamanho inválido */
+    inteiro !array[!a];
+    
+    /* Erro: função sem corpo */
+    funcao inteiro !soma(inteiro !x, inteiro !y)
+}
