@@ -7,7 +7,6 @@ principal(){
     decimal !precos[10];
     
     !a = 5;
-    !b = !a + 3;
     !c = !b * 2;
     
     !x = !a + !b * !c;
@@ -15,7 +14,7 @@ principal(){
     
     se (!a > 0) {
         escreva("A é positivo");
-    }
+    
     
     se (!b <= 10 && !c >= 5) {
         escreva("B e C estão na faixa válida");
