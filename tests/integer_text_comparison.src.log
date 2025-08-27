@@ -1,0 +1,65 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_PRINCIPAL 'principal'
+   1: TOK_LPAREN      '('
+   1: TOK_RPAREN      ')'
+   1: TOK_LBRACE      '{'
+   2: TOK_KW_INTEIRO  'inteiro'
+   2: TOK_IDENTIFIER  '!n'
+   2: TOK_SEMICOLON   ';'
+   3: TOK_KW_TEXTO    'texto'
+   3: TOK_IDENTIFIER  '!t'
+   3: TOK_LBRACKET    '['
+   3: TOK_INTEGER_LITERAL '5'
+   3: TOK_RBRACKET    ']'
+   3: TOK_SEMICOLON   ';'
+   4: TOK_KW_SE       'se'
+   4: TOK_LPAREN      '('
+   4: TOK_IDENTIFIER  '!n'
+   4: TOK_LT          '<'
+   4: TOK_IDENTIFIER  '!t'
+   4: TOK_RPAREN      ')'
+   4: TOK_LBRACE      '{'
+   5: TOK_KW_ESCREVA  'escreva'
+   5: TOK_LPAREN      '('
+   5: TOK_STRING_LITERAL 'erro'
+   5: TOK_RPAREN      ')'
+   5: TOK_SEMICOLON   ';'
+   6: TOK_RBRACE      '}'
+   7: TOK_RBRACE      '}'
+   8: TOK_EOF         ''
+[32mAnálise léxica concluída com sucesso![0m
+
+[34m=== ANÁLISE SINTÁTICA ===[0m
+[32mAnálise sintática concluída com sucesso![0m
+
+[34m=== VALIDAÇÕES SINTÁTICAS ===[0m
+[32m✓ Sequência de declarações válida[0m
+[32m✓ Regras de espaçamento respeitadas[0m
+[32m✓ Uso de variáveis válido[0m
+
+[34m=== ÁRVORE SINTÁTICA ABSTRATA ===[0m
+PROGRAM 'principal'
+  DECLARATION 'inteiro'
+    IDENTIFIER '!n'
+  DECLARATION 'texto'
+    IDENTIFIER '!t'
+    LITERAL '5'
+  IF_STMT 'se'
+    BINARY_OP '<'
+      IDENTIFIER '!n'
+      IDENTIFIER '!t'
+    BLOCK '{'
+      WRITE_STMT 'escreva'
+        LITERAL 'erro'
+[33mAlerta semântico (linha 4): comparação com tipos incompatíveis[0m
+[32mAnálise semântica concluída com sucesso![0m
+Escopo 0:
+  !n (var, int, linha 2)
+  !t (var, texto[0], linha 3)
+
+Pico de memória: 2866 bytes (inteiro=4B, decimal=8B, texto[n]=nB)
+
+[34m=== RELATÓRIO DE MEMÓRIA ===[0m
+Uso atual: 524 bytes
+Pico de uso: 2866 bytes
