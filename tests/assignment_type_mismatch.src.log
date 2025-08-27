@@ -1,0 +1,29 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+[31mErro sintático na linha 3: Esperado ';' após declaração[0m
+Token atual: '=' (TOK_ASSIGN)
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_PRINCIPAL 'principal'
+   1: TOK_LPAREN      '('
+   1: TOK_RPAREN      ')'
+   1: TOK_LBRACE      '{'
+   2: TOK_KW_INTEIRO  'inteiro'
+   2: TOK_IDENTIFIER  '!numero'
+   2: TOK_SEMICOLON   ';'
+   3: TOK_KW_TEXTO    'texto'
+   3: TOK_IDENTIFIER  '!palavra'
+   3: TOK_LBRACKET    '['
+   3: TOK_INTEGER_LITERAL '10'
+   3: TOK_RBRACKET    ']'
+   3: TOK_ASSIGN      '='
+   3: TOK_STRING_LITERAL 'teste'
+   3: TOK_SEMICOLON   ';'
+   4: TOK_IDENTIFIER  '!numero'
+   4: TOK_ASSIGN      '='
+   4: TOK_IDENTIFIER  '!palavra'
+   4: TOK_SEMICOLON   ';'
+   5: TOK_RBRACE      '}'
+   6: TOK_EOF         ''
+[32mAnálise léxica concluída com sucesso![0m
+
+[34m=== ANÁLISE SINTÁTICA ===[0m
+[31mErros encontrados durante a análise sintática.[0m

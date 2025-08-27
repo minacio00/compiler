@@ -1,0 +1,46 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+[33mAlerta semântico (linha 1): deve existir exatamente uma função principal()[0m
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_PRINCIPAL 'principal'
+   1: TOK_LPAREN      '('
+   1: TOK_RPAREN      ')'
+   1: TOK_LBRACE      '{'
+   2: TOK_KW_TEXTO    'texto'
+   2: TOK_IDENTIFIER  '!msg'
+   2: TOK_LBRACKET    '['
+   2: TOK_INTEGER_LITERAL '5'
+   2: TOK_RBRACKET    ']'
+   2: TOK_SEMICOLON   ';'
+   3: TOK_IDENTIFIER  '!msg'
+   3: TOK_ASSIGN      '='
+   3: TOK_STRING_LITERAL 'excede'
+   3: TOK_SEMICOLON   ';'
+   4: TOK_RBRACE      '}'
+   5: TOK_EOF         ''
+[32mAnálise léxica concluída com sucesso![0m
+
+[34m=== ANÁLISE SINTÁTICA ===[0m
+[32mAnálise sintática concluída com sucesso![0m
+
+[34m=== VALIDAÇÕES SINTÁTICAS ===[0m
+[32m✓ Sequência de declarações válida[0m
+[32m✓ Regras de espaçamento respeitadas[0m
+[32m✓ Uso de variáveis válido[0m
+
+[34m=== ÁRVORE SINTÁTICA ABSTRATA ===[0m
+PROGRAM 'principal'
+  DECLARATION 'texto'
+    IDENTIFIER '!msg'
+    LITERAL '5'
+  ASSIGNMENT '!msg'
+    IDENTIFIER '!msg'
+    LITERAL 'excede'
+[32mAnálise semântica concluída com sucesso![0m
+Escopo 0:
+  !msg (var, texto[0], linha 2)
+
+Pico de memória: 1855 bytes (inteiro=4B, decimal=8B, texto[n]=nB)
+
+[34m=== RELATÓRIO DE MEMÓRIA ===[0m
+Uso atual: 330 bytes
+Pico de uso: 1855 bytes

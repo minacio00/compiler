@@ -1,0 +1,9 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+Erro léxico na linha (line 2): Identificador inválido: 'Erro' não é palavra-chave, nem nome de função nem variável
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_PRINCIPAL 'principal'
+   1: TOK_LPAREN      '('
+   1: TOK_RPAREN      ')'
+   1: TOK_LBRACE      '{'
+   2: TOK_SLASH       '/'
+   2: TOK_STAR        '*'

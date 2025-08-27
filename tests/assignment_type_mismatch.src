@@ -1,5 +1,6 @@
 principal(){
-    inteiro !numero;
-    texto !palavra[10] = "teste";
-    !numero = !palavra;
+  inteiro !n;
+  decimal !d[3.2]; !d = 2.5;
+  !n = !d;     
 }
+

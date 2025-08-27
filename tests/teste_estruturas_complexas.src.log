@@ -1,0 +1,5 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+Erro léxico na linha (line 1): Identificador inválido: 'Fun' não é palavra-chave, nem nome de função nem variável
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_SLASH       '/'
+   1: TOK_STAR        '*'

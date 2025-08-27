@@ -1,0 +1,67 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+[33mAlerta semântico (linha 1): deve existir exatamente uma função principal()[0m
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_PRINCIPAL 'principal'
+   1: TOK_LPAREN      '('
+   1: TOK_RPAREN      ')'
+   1: TOK_LBRACE      '{'
+   2: TOK_KW_INTEIRO  'inteiro'
+   2: TOK_IDENTIFIER  '!x'
+   2: TOK_ASSIGN      '='
+   2: TOK_INTEGER_LITERAL '1'
+   2: TOK_SEMICOLON   ';'
+   3: TOK_KW_INTEIRO  'inteiro'
+   3: TOK_IDENTIFIER  '!y'
+   3: TOK_ASSIGN      '='
+   3: TOK_INTEGER_LITERAL '2'
+   3: TOK_SEMICOLON   ';'
+   4: TOK_KW_SE       'se'
+   4: TOK_LPAREN      '('
+   4: TOK_IDENTIFIER  '!x'
+   4: TOK_AND         '&&'
+   4: TOK_IDENTIFIER  '!y'
+   4: TOK_RPAREN      ')'
+   4: TOK_LBRACE      '{'
+   5: TOK_KW_ESCREVA  'escreva'
+   5: TOK_LPAREN      '('
+   5: TOK_STRING_LITERAL 'erro'
+   5: TOK_RPAREN      ')'
+   5: TOK_SEMICOLON   ';'
+   6: TOK_RBRACE      '}'
+   7: TOK_RBRACE      '}'
+   8: TOK_EOF         ''
+[32mAnálise léxica concluída com sucesso![0m
+
+[34m=== ANÁLISE SINTÁTICA ===[0m
+[32mAnálise sintática concluída com sucesso![0m
+
+[34m=== VALIDAÇÕES SINTÁTICAS ===[0m
+[32m✓ Sequência de declarações válida[0m
+[32m✓ Regras de espaçamento respeitadas[0m
+[32m✓ Uso de variáveis válido[0m
+
+[34m=== ÁRVORE SINTÁTICA ABSTRATA ===[0m
+PROGRAM 'principal'
+  DECLARATION 'inteiro'
+    IDENTIFIER '!x'
+    LITERAL '1'
+  DECLARATION 'inteiro'
+    IDENTIFIER '!y'
+    LITERAL '2'
+  IF_STMT 'se'
+    BINARY_OP '&&'
+      IDENTIFIER '!x'
+      IDENTIFIER '!y'
+    BLOCK '{'
+      WRITE_STMT 'escreva'
+        LITERAL 'erro'
+[32mAnálise semântica concluída com sucesso![0m
+Escopo 0:
+  !x (var, int, linha 2)
+  !y (var, int, linha 3)
+
+Pico de memória: 3104 bytes (inteiro=4B, decimal=8B, texto[n]=nB)
+
+[34m=== RELATÓRIO DE MEMÓRIA ===[0m
+Uso atual: 674 bytes
+Pico de uso: 3104 bytes

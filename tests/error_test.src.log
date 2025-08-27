@@ -1,0 +1,33 @@
+[32mLimite máximo de memória: 2097152 bytes[0m
+[33mAlerta semântico (linha 1): deve existir exatamente uma função principal()[0m
+[34m=== ANÁLISE LÉXICA ===[0m
+   1: TOK_KW_INTEIRO  'inteiro'
+   1: TOK_IDENTIFIER  '!x'
+   1: TOK_ASSIGN      '='
+   1: TOK_INTEGER_LITERAL '5'
+   1: TOK_SEMICOLON   ';'
+   2: TOK_EOF         ''
+[32mAnálise léxica concluída com sucesso![0m
+
+[34m=== ANÁLISE SINTÁTICA ===[0m
+[32mAnálise sintática concluída com sucesso![0m
+
+[34m=== VALIDAÇÕES SINTÁTICAS ===[0m
+[32m✓ Sequência de declarações válida[0m
+[32m✓ Regras de espaçamento respeitadas[0m
+[32m✓ Uso de variáveis válido[0m
+
+[34m=== ÁRVORE SINTÁTICA ABSTRATA ===[0m
+PROGRAM 'inteiro'
+  DECLARATION 'inteiro'
+    IDENTIFIER '!x'
+    LITERAL '5'
+[32mAnálise semântica concluída com sucesso![0m
+Escopo 0:
+  !x (var, int, linha 1)
+
+Pico de memória: 1393 bytes (inteiro=4B, decimal=8B, texto[n]=nB)
+
+[34m=== RELATÓRIO DE MEMÓRIA ===[0m
+Uso atual: 190 bytes
+Pico de uso: 1393 bytes
