@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
     } else {
         printf("\033[32mAnálise semântica concluída com sucesso!\033[0m\n");
     }
-    symtab_print(sc);
+    symtab_print(sc->symtab);
     sema_destroy(sc);
 
     /* Limpeza da AST */
@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
     /* Relatório de memória */
     printf("\n\033[34m=== RELATÓRIO DE MEMÓRIA ===\033[0m\n");
     printf("Uso atual: %zu bytes\n", mm_current_usage());
-    printf("Pico de uso: %zu bytes\n", mm_max_usage());
+    printf("Pico de uso: %zu bytes\n", mm_peak_usage());
     
     mm_cleanup();
 
