@@ -83,6 +83,10 @@ static Type resolve_expr_type(SemaContext *sc, ASTNode *node) {
                 case TOK_GT:
                 case TOK_LE:
                 case TOK_GE:
+                    if (left.kind != right.kind ||
+                        (left.kind != TY_INT && left.kind != TY_DEC)) {
+                        sema_report_alert("comparação com tipos incompatíveis", node->token.line);
+                    }
                     t = make_type(TY_BOOL);
                     break;
                 case TOK_AND:
