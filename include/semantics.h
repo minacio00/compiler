@@ -9,12 +9,11 @@
 
 typedef struct {
     size_t mem_limit;
-    Scope *global_scope;
+    SymTab *symtab;
 } SemaContext;
 
 SemaContext* sema_create(size_t mem_limit_bytes);
 bool semantic_analyze(SemaContext* sc, ASTNode* ast);
-void symtab_print(SemaContext* sc);
 void sema_destroy(SemaContext* sc);
 
 #endif /* SEMANTICS_H */

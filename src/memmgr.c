@@ -103,7 +103,10 @@ void mm_free(void *ptr) {
 }
 
 size_t mm_current_usage(void) { return mm_current; }
-size_t mm_max_usage(void)     { return mm_high_water; }
+/* Limite máximo estabelecido via mm_init */
+size_t mm_max_usage(void) { return mm_limit; }
+/* Maior pico de uso observado */
+size_t mm_peak_usage(void) { return mm_high_water; }
 
 void mm_cleanup(void) {
     BlockHeader *h = mm_head;
