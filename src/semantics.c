@@ -137,6 +137,7 @@ static void analyze_node(SemaContext *sc, ASTNode *node, ASTNodeType parent) {
                 ASTNode *child = node->children[i];
                 if (child->type == AST_IDENTIFIER && child->token.lexeme) {
                     Type *t = (Type*)mm_malloc(sizeof(Type));
+                    mm_usage_guard();
                     if (t) *t = make_type(kind);
                     Symbol s = {0};
                     s.name = child->token.lexeme;
@@ -274,6 +275,7 @@ static void analyze_function(SemaContext *sc, ASTNode *func) {
             ASTNode *id = param->children[j];
             if (id->type != AST_IDENTIFIER) continue;
             Type *t = (Type*)mm_malloc(sizeof(Type));
+            mm_usage_guard();
             if (t) *t = make_type(kind);
             Symbol s = {0};
             s.name = id->token.lexeme;
@@ -321,6 +323,7 @@ static int build_function_index(SemaContext *sc, ASTNode *program, ASTNode **fun
                 }
             }
             Type *t = (Type*)mm_malloc(sizeof(Type));
+            mm_usage_guard();
             if (t) *t = make_type(TY_INT);
             Symbol s = {0};
             s.name = (char*)fname;
@@ -346,6 +349,7 @@ static int build_function_index(SemaContext *sc, ASTNode *program, ASTNode **fun
 
 SemaContext* sema_create(size_t mem_limit_bytes) {
     SemaContext *sc = (SemaContext*)mm_malloc(sizeof(SemaContext));
+    mm_usage_guard();
     if (!sc) return NULL;
     sc->mem_limit = mem_limit_bytes;
     sc->symtab = symtab_create();
@@ -364,6 +368,7 @@ bool semantic_analyze(SemaContext* sc, ASTNode* ast) {
     }
 
     ASTNode **funcs = (ASTNode**)mm_malloc(sizeof(ASTNode*) * ast->child_count);
+    mm_usage_guard();
     int count = build_function_index(sc, ast, funcs);
     int i;
     for (i = 0; i < count; i++) {

@@ -108,6 +108,19 @@ size_t mm_max_usage(void) { return mm_limit; }
 /* Maior pico de uso observado */
 size_t mm_peak_usage(void) { return mm_high_water; }
 
+void mm_usage_guard(void) {
+    size_t usage = mm_current_usage();
+    size_t limit = mm_max_usage();
+    if (limit > 0) {
+        if (usage >= limit) {
+            fprintf(stderr, "Memória Insuficiente\n");
+            exit(EXIT_FAILURE);
+        } else if (usage >= (size_t)(0.9 * (double)limit)) {
+            fprintf(stderr, "Alerta: uso de memória entre 90%% e 99%%\n");
+        }
+    }
+}
+
 void mm_cleanup(void) {
     BlockHeader *h = mm_head;
     while (h) {

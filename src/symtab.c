@@ -6,6 +6,8 @@
 
 #define SYMTAB_BUCKETS 64
 
+/* Assumimos tamanhos: inteiro=4B, decimal=8B, texto[n]=nB */
+
 /* Hash simples para strings (djb2) */
 static unsigned long sym_hash(const char *str) {
     unsigned long hash = 5381;
@@ -18,11 +20,13 @@ static unsigned long sym_hash(const char *str) {
 
 static Scope* scope_new(size_t id, Scope *parent) {
     Scope *s = (Scope*)mm_malloc(sizeof(Scope));
+    mm_usage_guard();
     if (!s) return NULL;
     s->id = id;
     s->parent = parent;
     s->bucket_count = SYMTAB_BUCKETS;
     s->buckets = (Symbol**)mm_malloc(sizeof(Symbol*) * s->bucket_count);
+    mm_usage_guard();
     if (!s->buckets) {
         mm_free(s);
         return NULL;
@@ -36,6 +40,7 @@ static Scope* scope_new(size_t id, Scope *parent) {
 
 SymTab* symtab_create(void) {
     SymTab *st = (SymTab*)mm_malloc(sizeof(SymTab));
+    mm_usage_guard();
     if (!st) return NULL;
     st->next_id = 1; /* global = 0 */
     st->current = scope_new(0, NULL);
@@ -94,11 +99,13 @@ bool symtab_insert(SymTab *st, const Symbol *sym) {
     }
 
     Symbol *copy = (Symbol*)mm_malloc(sizeof(Symbol));
+    mm_usage_guard();
     if (!copy) return false;
     memcpy(copy, sym, sizeof(Symbol));
 
     size_t len = strlen(sym->name);
     copy->name = (char*)mm_malloc(len + 1);
+    mm_usage_guard();
     if (!copy->name) {
         mm_free(copy);
         return false;
@@ -108,16 +115,6 @@ bool symtab_insert(SymTab *st, const Symbol *sym) {
     copy->next = st->current->buckets[h];
     st->current->buckets[h] = copy;
 
-    size_t usage = mm_current_usage();
-    size_t limit = mm_max_usage();
-    if (limit > 0) {
-        if (usage >= limit) {
-            fprintf(stderr, "Memória Insuficiente\n");
-            exit(EXIT_FAILURE);
-        } else if (usage >= (size_t)(0.9 * (double)limit)) {
-            fprintf(stderr, "Alerta: uso de memória entre 90%% e 99%%\n");
-        }
-    }
     return true;
 }
 
@@ -176,6 +173,7 @@ void symtab_print(SymTab *st) {
         for (s = st->current; s; s = s->parent) count++;
     }
     Scope **order = (Scope**)mm_malloc(sizeof(Scope*) * count);
+    mm_usage_guard();
     {
         size_t i = count;
         Scope *s;
@@ -206,5 +204,8 @@ void symtab_print(SymTab *st) {
         }
     }
     mm_free(order);
+
+    size_t peak = mm_peak_usage();
+    printf("Pico de memória: %zu bytes (inteiro=4B, decimal=8B, texto[n]=nB)\n", peak);
 }
 

@@ -15,6 +15,7 @@ size_t mm_current_usage(void);
 size_t mm_max_usage(void);
 /* Retorna o maior pico de uso registrado */
 size_t mm_peak_usage(void);
+void mm_usage_guard(void);
 
 
 void mm_cleanup(void);
