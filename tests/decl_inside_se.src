@@ -1,0 +1,6 @@
+principal(){
+    inteiro !a;
+    se (!a == 0) {
+        inteiro !b;
+    }
+}
