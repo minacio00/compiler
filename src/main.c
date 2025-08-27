@@ -5,15 +5,16 @@
 #include "parser.h"
 #include "util.h"
 #include "error.h"
+#include "semantics.h"
 
-int parse_file(const char *path) {
+ASTNode* parse_file(const char *path) {
     init_scanner(path);
     
     Parser *parser = parser_init();
     if (!parser) {
         fprintf(stderr, "Erro: não foi possível inicializar o parser\n");
         close_scanner();
-        return EXIT_FAILURE;
+        return NULL;
     }
     
     printf("\033[34m=== ANÁLISE SINTÁTICA ===\033[0m\n");
@@ -24,7 +25,7 @@ int parse_file(const char *path) {
         free_ast(ast);
         parser_free(parser);
         close_scanner();
-        return EXIT_FAILURE;
+        return NULL;
     }
     
     printf("\033[32mAnálise sintática concluída com sucesso!\033[0m\n\n");
@@ -37,7 +38,7 @@ int parse_file(const char *path) {
         free_ast(ast);
         parser_free(parser);
         close_scanner();
-        return EXIT_FAILURE;
+        return NULL;
     }
     printf("\033[32m✓ Sequência de declarações válida\033[0m\n");
     
@@ -46,7 +47,7 @@ int parse_file(const char *path) {
         free_ast(ast);
         parser_free(parser);
         close_scanner();
-        return EXIT_FAILURE;
+        return NULL;
     }
     printf("\033[32m✓ Regras de espaçamento respeitadas\033[0m\n");
     
@@ -55,20 +56,18 @@ int parse_file(const char *path) {
         free_ast(ast);
         parser_free(parser);
         close_scanner();
-        return EXIT_FAILURE;
+        return NULL;
     }
     printf("\033[32m✓ Uso de variáveis válido\033[0m\n");
-    
+
     /* Imprimir AST */
     printf("\n\033[34m=== ÁRVORE SINTÁTICA ABSTRATA ===\033[0m\n");
     print_ast(ast, 0);
-    
-    /* Limpeza */
-    free_ast(ast);
+
     parser_free(parser);
     close_scanner();
-    
-    return EXIT_SUCCESS;
+
+    return ast;
 }
 
 int main(int argc, char **argv) {
@@ -94,7 +93,29 @@ int main(int argc, char **argv) {
     printf("\033[32mAnálise léxica concluída com sucesso!\033[0m\n\n");
     
     /* Análise sintática */
-    int parse_result = parse_file(argv[1]);
+    ASTNode *ast = parse_file(argv[1]);
+    if (!ast) {
+        mm_cleanup();
+        return EXIT_FAILURE;
+    }
+
+    /* Análise semântica */
+    SemaContext *sc = sema_create(LIMITE_MEMORIA);
+    if (!sc) {
+        free_ast(ast);
+        mm_cleanup();
+        return EXIT_FAILURE;
+    }
+    if (!semantic_analyze(sc, ast)) {
+        printf("\033[31mErros encontrados durante a análise semântica.\033[0m\n");
+    } else {
+        printf("\033[32mAnálise semântica concluída com sucesso!\033[0m\n");
+    }
+    symtab_print(sc);
+    sema_destroy(sc);
+
+    /* Limpeza da AST */
+    free_ast(ast);
     
     /* Relatório de memória */
     printf("\n\033[34m=== RELATÓRIO DE MEMÓRIA ===\033[0m\n");
@@ -103,6 +124,6 @@ int main(int argc, char **argv) {
     
     mm_cleanup();
 
-    return parse_result;
+    return EXIT_SUCCESS;
 }
 

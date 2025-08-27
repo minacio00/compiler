@@ -3,7 +3,7 @@ CFLAGS    = -std=c90 -Wall -Wextra -g -Iinclude
 LDFLAGS   =
 SRCDIR    = src
 BUILDDIR  = build
-TARGET    = lex
+TARGET    = compiler
 
 SOURCES   = $(wildcard $(SRCDIR)/*.c)
 OBJECTS   = $(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SOURCES))
