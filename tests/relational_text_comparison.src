@@ -1,0 +1,7 @@
+principal(){
+    texto !a[5] = "abc";
+    texto !b[5] = "def";
+    se (!a < !b) {
+        escreva("erro");
+    }
+}

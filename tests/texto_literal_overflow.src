@@ -1,0 +1,4 @@
+principal(){
+    texto !msg[5];
+    !msg = "excede";
+}

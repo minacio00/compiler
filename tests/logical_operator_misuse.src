@@ -1,0 +1,7 @@
+principal(){
+    inteiro !x = 1;
+    inteiro !y = 2;
+    se (!x && !y) {
+        escreva("erro");
+    }
+}
