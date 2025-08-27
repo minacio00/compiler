@@ -14,6 +14,8 @@ typedef struct {
 
 SemaContext* sema_create(size_t mem_limit_bytes);
 bool semantic_analyze(SemaContext* sc, ASTNode* ast);
+/* Imprime a tabela de símbolos acumulada e relatório de memória. */
+void symtab_print(SemaContext* sc);
 void sema_destroy(SemaContext* sc);
 
 #endif /* SEMANTICS_H */

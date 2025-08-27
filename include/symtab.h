@@ -46,7 +46,8 @@ void symtab_leave_scope(SymTab *st);
 bool symtab_insert(SymTab *st, const Symbol *sym);
 Symbol* symtab_lookup(SymTab *st, const char *name);
 
-void symtab_print(SymTab *st);
+/* Imprime a tabela de símbolos. Usado internamente pela camada semântica. */
+void symtab_dump(SymTab *st);
 
 #endif /* SYMTAB_H */
 

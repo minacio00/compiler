@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
     } else {
         printf("\033[32mAnálise semântica concluída com sucesso!\033[0m\n");
     }
-    symtab_print(sc->symtab);
+    symtab_print(sc);
     sema_destroy(sc);
 
     /* Limpeza da AST */

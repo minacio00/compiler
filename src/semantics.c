@@ -378,6 +378,12 @@ bool semantic_analyze(SemaContext* sc, ASTNode* ast) {
     return true;
 }
 
+/* Wrapper para exibir a tabela de símbolos associada ao contexto. */
+void symtab_print(SemaContext* sc) {
+    if (!sc) return;
+    symtab_dump(sc->symtab);
+}
+
 void sema_destroy(SemaContext* sc) {
     if (!sc) return;
     symtab_destroy(sc->symtab);

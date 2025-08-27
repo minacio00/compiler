@@ -164,7 +164,10 @@ static const char* type_str(const Type *t) {
     }
 }
 
-void symtab_print(SymTab *st) {
+/* Imprime todo o conteúdo da tabela de símbolos, preservando a ordem de
+   criação de escopos. A função também reporta o pico de memória observado
+   pelo gerenciador. */
+void symtab_dump(SymTab *st) {
     if (!st) return;
 
     size_t count = 0;
