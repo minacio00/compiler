@@ -2,6 +2,7 @@
 #define PARSER_H
 
 #include "token.h"
+#include "types.h"
 
 /* Tipos de nós da árvore sintática */
 typedef enum {
@@ -32,6 +33,7 @@ typedef struct ASTNode {
     int child_count;                /* Número de filhos */
     int child_capacity;             /* Capacidade do array de filhos */
     char *value;                    /* Valor opcional do nó */
+    Type inferred_type;             /* Tipo inferido pelo analisador semântico */
 } ASTNode;
 
 /* Estrutura do analisador sintático */

@@ -148,10 +148,22 @@ static const char* class_str(SymClass c) {
 static const char* type_str(const Type *t) {
     if (!t) return "?";
     switch (t->kind) {
-        case TYPE_INT:   return "int";
-        case TYPE_FLOAT: return "float";
-        case TYPE_VOID:  return "void";
-        default:         return "?";
+        case TY_INT:
+            return "int";
+        case TY_DEC: {
+            static char buf[32];
+            sprintf(buf, "decimal[%d.%d]", t->info.dec.a, t->info.dec.b);
+            return buf;
+        }
+        case TY_TXT: {
+            static char buf[32];
+            sprintf(buf, "texto[%zu]", t->info.txt.n);
+            return buf;
+        }
+        case TY_BOOL:
+            return "bool";
+        default:
+            return "?";
     }
 }
 
