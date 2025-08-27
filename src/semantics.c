@@ -155,6 +155,14 @@ static void analyze_node(SemaContext *sc, ASTNode *node, ASTNodeType parent) {
             return;
         }
 
+        case AST_BLOCK: {
+            int i;
+            for (i = 0; i < node->child_count; i++) {
+                analyze_node(sc, node->children[i], parent);
+            }
+            return;
+        }
+
         case AST_ASSIGNMENT: {
             if (node->child_count >= 2) {
                 ASTNode *lhs = node->children[0];
@@ -306,6 +314,12 @@ static void analyze_function(SemaContext *sc, ASTNode *func) {
 static int build_function_index(SemaContext *sc, ASTNode *program, ASTNode **funcs) {
     int count = 0;
     int principal_count = 0;
+
+    /* O nó raiz representa implicitamente a função principal() */
+    if (program->token.lexeme && strcmp(program->token.lexeme, "principal") == 0) {
+        principal_count = 1;
+    }
+
     int i;
     for (i = 0; i < program->child_count; i++) {
         ASTNode *child = program->children[i];
