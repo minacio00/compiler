@@ -1,0 +1,5 @@
+principal(){
+    inteiro !numero;
+    texto !palavra[10] = "teste";
+    !numero = !palavra;
+}

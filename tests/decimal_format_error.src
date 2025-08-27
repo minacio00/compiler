@@ -1,0 +1,4 @@
+principal(){
+    decimal !a[10];
+    decimal !b[5,2];
+}

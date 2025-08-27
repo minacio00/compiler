@@ -76,7 +76,11 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    const size_t LIMITE_MEMORIA = 2048 * 1024;
+    size_t LIMITE_MEMORIA = 2048 * 1024;
+    const char *limit_env = getenv("MM_LIMIT");
+    if (limit_env) {
+        LIMITE_MEMORIA = strtoul(limit_env, NULL, 10);
+    }
 
     mm_init(LIMITE_MEMORIA);
     fprintf(stderr, "\033[32mLimite máximo de memória: %zu bytes\033[0m\n", (size_t)LIMITE_MEMORIA);
