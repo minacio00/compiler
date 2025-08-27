@@ -47,6 +47,9 @@ ASTNode* ast_node_create(ASTNodeType type, Token token) {
     node->child_count = 0;
     node->child_capacity = 0;
     node->value = NULL;
+    node->inferred_type.kind = TY_INT;
+    node->inferred_type.info.dec.a = 0;
+    node->inferred_type.info.dec.b = 0;
     
     return node;
 }
